@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import Styles from "./Header.module.css";
 
-import { headerNavigationContents } from "@/app/data/data";
+import { headerNavigationContents } from "@/src/data/data";
 import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";

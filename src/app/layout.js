@@ -1,6 +1,6 @@
-import Footer from "./components/Footer/Footer.jsx";
-import Header from "./components/Header/Header.jsx";
-import "./styles/global.css";
+import Footer from "/src/components/Footer/Footer.jsx";
+import Header from "/src/components/Header/Header.jsx";
+import "@/src/styles/global.css";
 
 export const metadata = {
 	title: "Pindie",

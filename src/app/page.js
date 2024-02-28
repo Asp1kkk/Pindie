@@ -1,7 +1,7 @@
-import Banner from "./components/Banner/Banner.jsx";
-import CardList from "./components/CardList/CardList.jsx";
-import Promo from "./components/Promo/Promo.jsx";
-import { getGames } from "./data/data-utils.js";
+import Banner from "/src/components/Banner/Banner.jsx";
+import CardList from "/src/components/CardList/CardList.jsx";
+import Promo from "/src/components/Promo/Promo.jsx";
+import { getGames } from "/src/data/data-utils.js";
 
 const Home = () => {
 	const popularCards = getGames("popular");

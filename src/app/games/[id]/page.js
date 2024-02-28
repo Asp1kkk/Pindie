@@ -1,6 +1,6 @@
-import GameNotFound from "@/app/components/GameNotFound/GameNotFound.jsx";
-import Game from "@/app/components/GamePage/Game";
-import { getGame } from "@/app/data/data-utils";
+import GameNotFound from "/src/components/GameNotFound/GameNotFound.jsx";
+import Game from "/src/components/GamePage/Game";
+import { getGame } from "/src/data/data-utils";
 
 const GamePage = ({ params: { id } }) => {
 	const game = getGame(id);

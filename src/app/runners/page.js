@@ -1,5 +1,5 @@
-import CardList from "../components/CardList/CardList";
-import { getGames } from "../data/data-utils";
+import CardList from "/src/components/CardList/CardList";
+import { getGames } from "/src/data/data-utils";
 
 const New = () => {
 	const runnerCards = getGames("runner");
