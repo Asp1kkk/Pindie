@@ -8,7 +8,7 @@ export const getGame = (id) => {
 	return cards.find((game) => game.id == id);
 };
 
-const getData = async (url) => {
+export const getData = async (url) => {
 	try {
 		const res = await fetch(url);
 		if (!res.ok) {
