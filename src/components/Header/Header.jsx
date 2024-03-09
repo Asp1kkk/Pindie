@@ -6,10 +6,18 @@ import { usePathname } from "next/navigation";
 
 import Styles from "./Header.module.css";
 
-import { headerNavigationContents } from "@/src/data/data";
 import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
+
+const headerNavigationContents = [
+	{ title: "Новинки", path: "/new" },
+	{ title: "Популярные", path: "/popular" },
+	{ title: "Шутеры", path: "/shooters" },
+	{ title: "Ранеры", path: "/runners" },
+	{ title: "Пиксельные", path: "/pixel-games" },
+	{ title: "TDS", path: "/tds" },
+];
 
 const Header = () => {
 	const [popupIsOpened, setPopupIsOpened] = useState(false);

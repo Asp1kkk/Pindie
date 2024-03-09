@@ -1,8 +1,8 @@
+import { getGamesByCategory } from "@/src/api/api-utils";
 import CardList from "/src/components/CardList/CardList";
-import { getGames } from "/src/data/data-utils";
 
-const New = () => {
-	const newCards = getGames("new");
+const New = async () => {
+	const newCards = await getGamesByCategory("new");
 	return (
 		<main className="main-inner">
 			<CardList data={newCards} id="new" title="Новинки" />
