@@ -4,12 +4,13 @@ export const getData = async (url) => {
 	try {
 		const res = await fetch(url);
 		if (!res.ok) {
-			throw new Error("Ошибка получения данных");
+			return;
 		}
 		const data = await res.json();
 		return data;
 	} catch (error) {
 		console.error(error);
+		return;
 	}
 };
 
@@ -24,12 +25,14 @@ export const getGamesByCategory = async (category) => {
 };
 
 const normalizeGame = (game) => {
-	return {
-		...game,
-		author: game.developer,
-		heading: game.title,
-		users: game.users_permissions_users,
-		category: game.categoies,
-		src: game.image,
-	};
+	return game
+		? {
+				...game,
+				author: game.developer,
+				heading: game.title,
+				users: game.users_permissions_users,
+				category: game.categoies,
+				src: game.image,
+			}
+		: null;
 };
