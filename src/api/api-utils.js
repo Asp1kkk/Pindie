@@ -1,4 +1,4 @@
-import { endPoints } from "./config";
+import { endPoints, BASE_URL } from "./config";
 
 export const getData = async (url) => {
 	try {
@@ -35,4 +35,21 @@ const normalizeGame = (game) => {
 				src: game.image,
 			}
 		: null;
+};
+
+export const authorize = async (authData) => {
+	try {
+		const response = await fetch(endPoints.auth, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(authData),
+		});
+		if (!response.ok) {
+			throw new Error("Ошибка отправки данных :/");
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		return error;
+	}
 };
