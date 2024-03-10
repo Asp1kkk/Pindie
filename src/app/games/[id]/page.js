@@ -10,18 +10,12 @@ const GamePage = ({ params: { id } }) => {
 	const [game, setGame] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
-		try {
-			(async () => {
-				const data = await getGameById(id);
-				data && setGame(data);
-				setIsLoading(false);
-			})();
-		} catch (error) {
-			console.error(error);
-			return;
-		}
+		(async () => {
+			const data = await getGameById(id);
+			data && setGame(data);
+			setIsLoading(false);
+		})();
 	}, []);
-	console.log(game);
 	return (
 		<main className="main-inner">
 			{game ? <Game data={game} /> : isLoading ? <Preloader /> : <GameNotFound />}
