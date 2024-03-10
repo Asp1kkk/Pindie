@@ -9,8 +9,7 @@ export const getData = async (url) => {
 		const data = await res.json();
 		return data;
 	} catch (error) {
-		console.error(error);
-		return;
+		return null;
 	}
 };
 
@@ -50,6 +49,6 @@ export const authorize = async (authData) => {
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		return error;
+		return null;
 	}
 };

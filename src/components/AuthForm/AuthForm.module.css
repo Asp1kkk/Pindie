@@ -92,3 +92,11 @@
 	opacity: 0.5;
 	pointer-events: none;
 }
+
+.form__message {
+	margin-bottom: 20px;
+}
+
+.error {
+	color: #ff3535;
+}

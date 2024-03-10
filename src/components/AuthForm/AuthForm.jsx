@@ -1,26 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Styles from "./AuthForm.module.css";
+import { authorize } from "@/src/api/api-utils";
 
-const AuthForm = ({ setAuth, close }) => {
-	const [authData, setAuthData] = useState({ identifier: "", password: "" });
+const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
+
+const AuthForm = ({ setAuth, handlePopup }) => {
+	const [authData, setAuthData] = useState(AUTH_DATA_TEMPLATE);
 	const [userData, setUserData] = useState(null);
 	const [message, setMessage] = useState({ status: null, text: null });
 
-	const handleInput = (e, type) => {
+	const handleInput = (e) => {
 		e.preventDefault();
-		setAuthData((prev) => ({ ...prev, [type]: e.target.value }));
+		setAuthData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
+	const handleReset = () => setAuthData(AUTH_DATA_TEMPLATE);
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const userData = await authorize(authData);
+		userData
+			? (setUserData(userData),
+				setAuth(true),
+				setMessage({ status: "success", text: "Вы авторизовались!" }))
+			: setMessage({ status: "error", text: "Неверные почта или пароль" });
+	};
+
+	useEffect(() => {
+		let timer;
+		if (userData) {
+			timer = setTimeout(() => {
+				handlePopup();
+			}, 1000);
+		}
+		return () => clearTimeout(timer);
+	}, [userData]);
+
 	return (
-		<form className={Styles["form"]}>
+		<form onReset={handleReset} onSubmit={handleSubmit} className={Styles["form"]}>
 			<h2 className={Styles["form__title"]}>Авторизация</h2>
 			<div className={Styles["form__fields"]}>
 				<label className={Styles["form__field"]}>
 					<span className={Styles["form__field-title"]}>Email</span>
 					<input
-						onInput={(e) => handleInput(e, "identifier")}
+						onInput={handleInput}
+						name="identifier"
 						value={authData.identifier}
 						className={Styles["form__field-input"]}
 						type="email"
@@ -30,7 +56,8 @@ const AuthForm = ({ setAuth, close }) => {
 				<label className={Styles["form__field"]}>
 					<span className={Styles["form__field-title"]}>Пароль</span>
 					<input
-						onInput={(e) => handleInput(e, "password")}
+						onInput={handleInput}
+						name="password"
 						value={authData.password}
 						className={Styles["form__field-input"]}
 						type="password"
@@ -38,6 +65,13 @@ const AuthForm = ({ setAuth, close }) => {
 					/>
 				</label>
 			</div>
+			{message.status && (
+				<p
+					className={`${Styles.form__message} ${message.status === "error" && Styles.error}`}
+				>
+					{message.text}
+				</p>
+			)}
 			<div className={Styles["form__actions"]}>
 				<button className={Styles["form__reset"]} type="reset">
 					Очистить

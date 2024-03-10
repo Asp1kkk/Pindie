@@ -3,9 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import Styles from "./Header.module.css";
-
 import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
@@ -26,7 +24,7 @@ const Header = () => {
 	const pathname = usePathname();
 
 	const handlePopup = (e) => {
-		e.stopPropagation();
+		e?.stopPropagation();
 		setPopupIsOpened((prev) => !prev);
 	};
 	return (
@@ -68,7 +66,7 @@ const Header = () => {
 			{popupIsOpened && (
 				<Overlay handlePopup={handlePopup}>
 					<Popup handlePopup={handlePopup}>
-						<AuthForm close={handlePopup} setAuth={setIsAuthorized}></AuthForm>
+						<AuthForm handlePopup={handlePopup} setAuth={setIsAuthorized}></AuthForm>
 					</Popup>
 				</Overlay>
 			)}
