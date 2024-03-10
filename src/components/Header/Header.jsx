@@ -21,6 +21,8 @@ const headerNavigationContents = [
 
 const Header = () => {
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
+	const [isAuthorized, setIsAuthorized] = useState(false);
+
 	const pathname = usePathname();
 
 	const handlePopup = (e) => {
@@ -30,10 +32,18 @@ const Header = () => {
 	return (
 		<header className={Styles.header}>
 			{pathname === "/" ? (
-				<img className={`${Styles.logo} ${Styles.logo__image}`} src="/images/logo.svg" alt="Логотип Pindie" />
+				<img
+					className={`${Styles.logo} ${Styles.logo__image}`}
+					src="/images/logo.svg"
+					alt="Логотип Pindie"
+				/>
 			) : (
 				<Link href="/" className={Styles.logo}>
-					<img className={Styles.logo__image} src="/images/logo.svg" alt="Логотип Pindie" />
+					<img
+						className={Styles.logo__image}
+						src="/images/logo.svg"
+						alt="Логотип Pindie"
+					/>
 				</Link>
 			)}
 			<nav className={Styles.menu}>
@@ -51,14 +61,14 @@ const Header = () => {
 				</ul>
 				<div className={Styles.auth}>
 					<button onClick={handlePopup} className={Styles.auth__button}>
-						Войти
+						{isAuthorized ? "Выйти" : "Войти"}
 					</button>
 				</div>
 			</nav>
 			{popupIsOpened && (
 				<Overlay handlePopup={handlePopup}>
 					<Popup handlePopup={handlePopup}>
-						<AuthForm></AuthForm>
+						<AuthForm close={handlePopup} setAuth={setIsAuthorized}></AuthForm>
 					</Popup>
 				</Overlay>
 			)}
