@@ -68,3 +68,15 @@ export const getMe = async (jwt) => {
 		return null;
 	}
 };
+
+export const setJWT = (jwt) => {
+	localStorage.setItem("jwt", jwt);
+};
+
+export const getJWT = () => {
+	localStorage.getItem("jwt");
+};
+
+export const removeJWT = () => {
+	localStorage.removeItem("jwt");
+};
