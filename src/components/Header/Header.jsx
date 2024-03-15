@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Styles from "./Header.module.css";
 import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
+import { getJWT, getMe, removeJWT } from "@/src/api/api-utils";
 
 const headerNavigationContents = [
 	{ title: "Новинки", path: "/new" },
@@ -20,8 +21,17 @@ const headerNavigationContents = [
 const Header = () => {
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
 	const [isAuthorized, setIsAuthorized] = useState(false);
-
 	const pathname = usePathname();
+
+	useEffect(() => {
+		(async () => {
+			const jwt = getJWT();
+			jwt &&
+				((await getMe(jwt))
+					? setIsAuthorized(true)
+					: (setIsAuthorized(false), removeJWT()));
+		})();
+	}, []);
 
 	const handlePopup = (e) => {
 		e?.stopPropagation();
