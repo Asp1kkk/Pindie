@@ -74,7 +74,7 @@ export const setJWT = (jwt) => {
 };
 
 export const getJWT = () => {
-	localStorage.getItem("jwt");
+	return localStorage.getItem("jwt");
 };
 
 export const removeJWT = () => {
