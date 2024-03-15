@@ -57,7 +57,7 @@ export const getMe = async (jwt) => {
 	try {
 		const response = await fetch(endPoints.me, {
 			method: "GET",
-			headers: { Authorization: `Bearer: ${jwt}` },
+			headers: { Authorization: `Bearer ${jwt}` },
 		});
 		if (!response.ok) {
 			throw new Error("Ошибка получения данных!");
