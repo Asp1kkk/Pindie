@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Styles from "./AuthForm.module.css";
-import { authorize } from "@/src/api/api-utils";
+import { authorize, setJWT } from "@/src/api/api-utils";
 
 const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
 
@@ -24,6 +24,7 @@ const AuthForm = ({ setAuth, handlePopup }) => {
 		userData
 			? (setUserData(userData),
 				setAuth(true),
+				setJWT(userData.jwt),
 				setMessage({ status: "success", text: "Вы авторизовались!" }))
 			: setMessage({ status: "error", text: "Неверные почта или пароль" });
 	};
