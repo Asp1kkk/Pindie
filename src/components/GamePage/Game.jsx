@@ -2,8 +2,26 @@
 
 import { useRouter } from "next/navigation";
 import Styles from "./Game.module.css";
+import { useEffect, useState } from "react";
+import { getJWT, getMe, removeJWT } from "@/src/api/api-utils";
 
 const Game = ({ data: { link, heading, author, description, users } }) => {
+	const [isAuthorized, setIsAuthorized] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			const jwt = getJWT();
+			if (jwt) {
+				if (await getMe(jwt)) {
+					setIsAuthorized(true);
+				} else {
+					setIsAuthorized(false);
+					removeJWT();
+				}
+			}
+		})();
+	}, []);
+
 	const router = useRouter();
 
 	const handleClick = () => {
@@ -29,9 +47,13 @@ const Game = ({ data: { link, heading, author, description, users } }) => {
 				<div className={Styles["about__vote"]}>
 					<p className={Styles["about__vote-amount"]}>
 						За игру уже проголосовали:
-						<span className={Styles["about__accent"]}>{users.length}</span>
+						<span classNamse={Styles["about__accent"]}>{users.length}</span>
 					</p>
-					<button onClick={handleClick} className={`button ${Styles["about__vote-button"]}`}>
+					<button
+						disabled={!isAuthorized}
+						onClick={handleClick}
+						className={`button ${Styles["about__vote-button"]}`}
+					>
 						Голосовать
 					</button>
 				</div>
