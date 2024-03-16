@@ -81,6 +81,6 @@ export const removeJWT = () => {
 	localStorage.removeItem("jwt");
 };
 
-export const checkIfUserVoted = (game, user) => {
-	return game.users.find((elem) => elem.id == user.id);
+export const checkIfUserVoted = (users, user) => {
+	return users.find((elem) => elem.id == user.id);
 };
