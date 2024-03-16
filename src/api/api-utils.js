@@ -84,3 +84,23 @@ export const removeJWT = () => {
 export const checkIfUserVoted = (users, user) => {
 	return users.find((elem) => elem.id == user.id);
 };
+
+export const vote = async (url, jwt, usersArray) => {
+	try {
+		const res = fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${jwt}`,
+			},
+			body: JSON.stringify({ users_permissions_users: usersArray }),
+		});
+		if (!res.ok) {
+			throw new Error("Ошибка голосования");
+		}
+		return await res.json();
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+};
