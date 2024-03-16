@@ -35,7 +35,12 @@ const Header = () => {
 
 	const handlePopup = (e) => {
 		e?.stopPropagation();
-		setPopupIsOpened((prev) => !prev);
+		if (isAuthorized && !popupIsOpened) {
+			removeJWT();
+			setIsAuthorized(false);
+		} else {
+			setPopupIsOpened((prev) => !prev);
+		}
 	};
 	return (
 		<header className={Styles.header}>
