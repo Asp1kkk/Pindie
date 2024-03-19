@@ -85,9 +85,10 @@ export const checkIfUserVoted = (users, user) => {
 	return users.find((elem) => elem.id == user.id);
 };
 
-export const vote = async (url, jwt, usersArray) => {
+export const vote = async (gameID, jwt, usersArray) => {
+	console.log(gameID, jwt, usersArray);
 	try {
-		const res = fetch(url, {
+		const res = await fetch(`${endPoints.games}/${gameID}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
