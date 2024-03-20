@@ -1,19 +1,38 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Styles from "./Game.module.css";
 import { useEffect, useState } from "react";
-import { getJWT, getMe, removeJWT } from "@/src/api/api-utils";
+import {
+	getJWT,
+	getMe,
+	removeJWT,
+	checkIfUserVoted,
+	vote,
+	isResponseOk,
+} from "@/src/api/api-utils";
+import AuthForm from "../AuthForm/AuthForm";
+import Popup from "../Popup/Popup";
+import Overlay from "../Overlay/Overlay";
 
-const Game = ({ data: { link, heading, author, description, users } }) => {
+const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	const [isAuthorized, setIsAuthorized] = useState(false);
+	const [user, setUser] = useState(null);
+	const [isVoted, setIsVoted] = useState(false);
+
+	const [popupIsOpened, setPopupIsOpened] = useState(false);
+	const handlePopup = (e) => {
+		e?.stopPropagation();
+		setPopupIsOpened((prev) => !prev);
+	};
 
 	useEffect(() => {
 		(async () => {
 			const jwt = getJWT();
 			if (jwt) {
-				if (await getMe(jwt)) {
+				const userData = await getMe(jwt);
+				if (isResponseOk(userData)) {
 					setIsAuthorized(true);
+					setUser(userData);
 				} else {
 					setIsAuthorized(false);
 					removeJWT();
@@ -22,10 +41,24 @@ const Game = ({ data: { link, heading, author, description, users } }) => {
 		})();
 	}, []);
 
-	const router = useRouter();
+	useEffect(() => {
+		user && setIsVoted(checkIfUserVoted(users, user));
+	}, [user, users]);
 
-	const handleClick = () => {
-		router.push("/auth");
+	const handleClick = async () => {
+		if (isAuthorized) {
+			const jwt = getJWT();
+
+			users.push(user);
+			const usersIDArray = users.map((item) => item.id);
+
+			const response = await vote(id, jwt, usersIDArray);
+			if (isResponseOk(response)) {
+				setIsVoted(true);
+			}
+		} else {
+			setPopupIsOpened(true);
+		}
 	};
 
 	return (
@@ -47,17 +80,24 @@ const Game = ({ data: { link, heading, author, description, users } }) => {
 				<div className={Styles["about__vote"]}>
 					<p className={Styles["about__vote-amount"]}>
 						За игру уже проголосовали:
-						<span classNamse={Styles["about__accent"]}>{users.length}</span>
+						<span className={Styles["about__accent"]}>{users.length}</span>
 					</p>
 					<button
-						disabled={!isAuthorized}
+						disabled={isVoted}
 						onClick={handleClick}
 						className={`button ${Styles["about__vote-button"]}`}
 					>
-						Голосовать
+						{isVoted ? "Голос учтён" : "Голосовать"}
 					</button>
 				</div>
 			</section>
+			{popupIsOpened && (
+				<Overlay handlePopup={handlePopup}>
+					<Popup handlePopup={handlePopup}>
+						<AuthForm handlePopup={handlePopup} setAuth={setIsAuthorized}></AuthForm>
+					</Popup>
+				</Overlay>
+			)}
 		</>
 	);
 };
