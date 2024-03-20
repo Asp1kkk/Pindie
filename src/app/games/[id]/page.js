@@ -1,6 +1,6 @@
 "use client";
 
-import { getGameById } from "@/src/api/api-utils";
+import { getGameById, isResponseOk } from "@/src/api/api-utils";
 import GameNotFound from "/src/components/GameNotFound/GameNotFound.jsx";
 import Game from "/src/components/GamePage/Game.jsx";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ const GamePage = ({ params: { id } }) => {
 	useEffect(() => {
 		(async () => {
 			const data = await getGameById(id);
-			data && setGame(data);
+			isResponseOk(data) && setGame(data);
 			setIsLoading(false);
 		})();
 	}, []);
