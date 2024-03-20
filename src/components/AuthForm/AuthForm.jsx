@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Styles from "./AuthForm.module.css";
-import { authorize, setJWT } from "@/src/api/api-utils";
+import { authorize, isResponseOk, setJWT } from "@/src/api/api-utils";
 
 const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
 
@@ -20,8 +20,10 @@ const AuthForm = ({ setAuth, handlePopup }) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
 		const userData = await authorize(authData);
-		userData
+
+		isResponseOk(userData)
 			? (setUserData(userData),
 				setAuth(true),
 				setJWT(userData.jwt),
