@@ -9,6 +9,7 @@ import { Preloader } from "@/src/components/Preloader/Preloader";
 const GamePage = ({ params: { id } }) => {
 	const [game, setGame] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+
 	useEffect(() => {
 		(async () => {
 			const data = await getGameById(id);
@@ -16,6 +17,7 @@ const GamePage = ({ params: { id } }) => {
 			setIsLoading(false);
 		})();
 	}, []);
+
 	return (
 		<main className="main-inner">
 			{game ? <Game data={game} /> : isLoading ? <Preloader /> : <GameNotFound />}
