@@ -27,10 +27,18 @@ const Promo = () => {
 					Скидка на все курсы Яндекс Практикума для пользователей нашего сайта!
 				</p>
 				<button onClick={handleClick} className={`button ${Styles[`promo__button`]}`}>
-					{codeIsVisible ? <span className={Styles["promo-code"]}>WEBTEENS10</span> : "Получить код"}
+					{codeIsVisible ? (
+						<span className={Styles["promo-code"]}>WEBTEENS10</span>
+					) : (
+						"Получить код"
+					)}
 				</button>
 			</div>
-			<img src={"/images/promo-illustration.svg"} alt={"Собака"} className={Styles[`promo__image`]} />
+			<img
+				src={"/images/promo-illustration.svg"}
+				alt={"Собака"}
+				className={Styles[`promo__image`]}
+			/>
 		</section>
 	);
 };
