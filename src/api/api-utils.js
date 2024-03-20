@@ -1,4 +1,4 @@
-import { endPoints, BASE_URL } from "./config";
+import { endPoints } from "./config";
 
 export const isResponseOk = (response) => {
 	return !(response instanceof Error);
@@ -19,14 +19,12 @@ export const getData = async (url) => {
 
 export const getGameById = async (id) => {
 	const data = await getData(`${endPoints.games}/${id}`);
-	return isResponseOk(data) ? normalizeGame(data) : new Error("Ошибка получения данных");
+	return isResponseOk(data) ? normalizeGame(data) : data;
 };
 
 export const getGamesByCategory = async (category) => {
 	const data = await getData(`${endPoints.games}?categories.name=${category}`);
-	return isResponseOk(data)
-		? data.map((item) => normalizeGame(item))
-		: new Error("Ошибка получения данных");
+	return isResponseOk(data) ? data.map((item) => normalizeGame(item)) : data;
 };
 
 const normalizeGame = (game) => {
