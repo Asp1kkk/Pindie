@@ -82,11 +82,10 @@ export const removeJWT = () => {
 };
 
 export const checkIfUserVoted = (users, user) => {
-	return users.find((elem) => elem.id == user.id);
+	return !!users.find((elem) => elem.id == user.id);
 };
 
 export const vote = async (gameID, jwt, usersArray) => {
-	console.log(gameID, jwt, usersArray);
 	try {
 		const res = await fetch(`${endPoints.games}/${gameID}`, {
 			method: "PUT",
@@ -96,7 +95,7 @@ export const vote = async (gameID, jwt, usersArray) => {
 			},
 			body: JSON.stringify({ users_permissions_users: usersArray }),
 		});
-		if (!res.ok) {
+		if (!res.ok || !gameID || !jwt || !usersArray) {
 			throw new Error("Ошибка голосования");
 		}
 		return await res.json();
