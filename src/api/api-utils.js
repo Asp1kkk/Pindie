@@ -1,26 +1,32 @@
 import { endPoints, BASE_URL } from "./config";
 
+export const isResponseOk = (response) => {
+	return !(response instanceof Error);
+};
+
 export const getData = async (url) => {
 	try {
 		const res = await fetch(url);
 		if (!res.ok) {
-			return;
+			throw new Error("Ошибка получения данных");
 		}
 		const data = await res.json();
 		return data;
 	} catch (error) {
-		return null;
+		return error;
 	}
 };
 
 export const getGameById = async (id) => {
 	const data = await getData(`${endPoints.games}/${id}`);
-	return normalizeGame(data);
+	return isResponseOk(data) ? normalizeGame(data) : new Error("Ошибка получения данных");
 };
 
 export const getGamesByCategory = async (category) => {
 	const data = await getData(`${endPoints.games}?categories.name=${category}`);
-	return data.map((item) => normalizeGame(item));
+	return isResponseOk(data)
+		? data.map((item) => normalizeGame(item))
+		: new Error("Ошибка получения данных");
 };
 
 const normalizeGame = (game) => {
@@ -49,7 +55,7 @@ export const authorize = async (authData) => {
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		return null;
+		return error;
 	}
 };
 
@@ -64,8 +70,7 @@ export const getMe = async (jwt) => {
 		}
 		return await response.json();
 	} catch (error) {
-		console.error(error);
-		return null;
+		return error;
 	}
 };
 
@@ -100,7 +105,6 @@ export const vote = async (gameID, jwt, usersArray) => {
 		}
 		return await res.json();
 	} catch (error) {
-		console.error(error);
-		return null;
+		return error;
 	}
 };
