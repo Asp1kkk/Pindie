@@ -1,13 +1,16 @@
-import { getGamesByCategory } from "@/src/api/api-utils";
-import CardList from "/src/components/CardList/CardList";
+"use client";
 
-const New = async () => {
-	const shooterCards = await getGamesByCategory("shooter");
+import { Preloader } from "@/src/components/Preloader/Preloader";
+import CardList from "/src/components/CardList/CardList";
+import { useGetDataByCategory } from "@/src/api/api-hooks";
+
+const Shooter = () => {
+	const shooterCards = useGetDataByCategory("shooter");
 	return (
 		<main className="main-inner">
-			<CardList data={shooterCards} id="shooter" title="Шутеры" />
+			{shooterCards ? <CardList data={shooterCards} id="shooter" title="Шутеры" /> : <Preloader />}
 		</main>
 	);
 };
 
-export default New;
+export default Shooter;
