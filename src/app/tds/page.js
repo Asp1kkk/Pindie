@@ -1,13 +1,16 @@
-import { getGamesByCategory } from "@/src/api/api-utils";
-import CardList from "/src/components/CardList/CardList";
+"use client";
 
-const New = async () => {
-	const tdsCards = await getGamesByCategory("TDS");
+import { Preloader } from "@/src/components/Preloader/Preloader";
+import CardList from "/src/components/CardList/CardList";
+import { useGetDataByCategory } from "@/src/api/api-hooks";
+
+const Tds = () => {
+	const tdsCards = useGetDataByCategory("TDS");
 	return (
 		<main className="main-inner">
-			<CardList data={tdsCards} id="TDS" title="TDS" />
+			{tdsCards ? <CardList data={tdsCards} id="TDS" title="TDS" /> : <Preloader />}
 		</main>
 	);
 };
 
-export default New;
+export default Tds;
