@@ -1,6 +1,5 @@
-import Footer from "/src/components/Footer/Footer.jsx";
-import Header from "/src/components/Header/Header.jsx";
 import "@/src/styles/global.css";
+import { App } from "./App";
 
 export const metadata = {
 	title: "Pindie",
@@ -11,9 +10,7 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="ru">
 			<body>
-				<Header />
-				{children}
-				<Footer />
+				<App>{children}</App>
 			</body>
 		</html>
 	);
