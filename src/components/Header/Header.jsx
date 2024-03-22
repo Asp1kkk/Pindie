@@ -12,10 +12,10 @@ import { getJWT, getMe, removeJWT } from "@/src/api/api-utils";
 const headerNavigationContents = [
 	{ title: "Новинки", path: "/new" },
 	{ title: "Популярные", path: "/popular" },
-	{ title: "Шутеры", path: "/shooters" },
-	{ title: "Ранеры", path: "/runners" },
-	{ title: "Пиксельные", path: "/pixel-games" },
-	{ title: "TDS", path: "/tds" },
+	{ title: "Шутеры", path: "/shooter" },
+	{ title: "Ранеры", path: "/runner" },
+	{ title: "Пиксельные", path: "/pixel" },
+	{ title: "TDS", path: "/TDS" },
 ];
 
 const Header = () => {
@@ -26,10 +26,7 @@ const Header = () => {
 	useEffect(() => {
 		(async () => {
 			const jwt = getJWT();
-			jwt &&
-				((await getMe(jwt))
-					? setIsAuthorized(true)
-					: (setIsAuthorized(false), removeJWT()));
+			jwt && ((await getMe(jwt)) ? setIsAuthorized(true) : (setIsAuthorized(false), removeJWT()));
 		})();
 	}, []);
 
@@ -45,18 +42,10 @@ const Header = () => {
 	return (
 		<header className={Styles.header}>
 			{pathname === "/" ? (
-				<img
-					className={`${Styles.logo} ${Styles.logo__image}`}
-					src="/images/logo.svg"
-					alt="Логотип Pindie"
-				/>
+				<img className={`${Styles.logo} ${Styles.logo__image}`} src="/images/logo.svg" alt="Логотип Pindie" />
 			) : (
 				<Link href="/" className={Styles.logo}>
-					<img
-						className={Styles.logo__image}
-						src="/images/logo.svg"
-						alt="Логотип Pindie"
-					/>
+					<img className={Styles.logo__image} src="/images/logo.svg" alt="Логотип Pindie" />
 				</Link>
 			)}
 			<nav className={Styles.menu}>
