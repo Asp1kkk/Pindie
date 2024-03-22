@@ -4,7 +4,7 @@ import { useGetDataByCategory } from "@/src/api/api-hooks";
 import CardList from "/src/components/CardList/CardList";
 import { Preloader } from "@/src/components/Preloader/Preloader";
 
-const New = () => {
+const Popular = () => {
 	const popularCards = useGetDataByCategory("popular");
 	return (
 		<main className="main-inner">
@@ -13,4 +13,4 @@ const New = () => {
 	);
 };
 
-export default New;
+export default Popular;
