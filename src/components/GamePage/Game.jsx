@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
-import { getJWT, checkIfUserVoted, vote, isResponseOk } from "@/src/api/api-utils";
-
-import { AuthContext } from "@/src/context/app-context";
+import { useEffect, useState } from "react";
+import { checkIfUserVoted, vote, isResponseOk } from "@/src/api/api-utils";
 
 import Styles from "./Game.module.css";
 import AuthForm from "../AuthForm/AuthForm";
 import Popup from "../Popup/Popup";
 import Overlay from "../Overlay/Overlay";
+import { useStore } from "@/src/store/app-store";
 
 const Game = ({ data: { id, link, heading, author, description, users } }) => {
-	const { isAuth, user, token } = useContext(AuthContext);
+	const { isAuth, user, token } = useStore();
 	const [isVoted, setIsVoted] = useState(false);
 
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
@@ -25,7 +24,6 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(1);
 		user && setIsVoted(checkIfUserVoted(users, user));
 	}, [user, users]);
 
@@ -66,11 +64,11 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 						<span className={Styles["about__accent"]}>{users.length}</span>
 					</p>
 					<button
-						disabled={isVoted}
+						disabled={isVoted && isAuth}
 						onClick={handleClick}
 						className={`button ${Styles["about__vote-button"]}`}
 					>
-						{isVoted ? "Голос учтён" : "Голосовать"}
+						{isVoted && isAuth ? "Голос учтён" : "Голосовать"}
 					</button>
 				</div>
 			</section>

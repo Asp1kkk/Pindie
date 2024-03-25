@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,7 +10,7 @@ import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
 
-import { AuthContext } from "@/src/context/app-context";
+import { useStore } from "@/src/store/app-store";
 
 const headerNavigationContents = [
 	{ title: "Новинки", path: "/new" },
@@ -22,7 +22,7 @@ const headerNavigationContents = [
 ];
 
 const Header = () => {
-	const { isAuth, logout } = useContext(AuthContext);
+	const { isAuth, logout } = useStore();
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
 	const pathname = usePathname();
 

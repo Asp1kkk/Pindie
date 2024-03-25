@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Styles from "./AuthForm.module.css";
-import { AuthContext } from "@/src/context/app-context";
 import { authorize, isResponseOk } from "@/src/api/api-utils";
+import { useStore } from "@/src/store/app-store";
 
 const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
 
 const AuthForm = ({ handlePopup }) => {
-	const { user, login } = useContext(AuthContext);
+	const { user, login } = useStore();
 	const [authData, setAuthData] = useState(AUTH_DATA_TEMPLATE);
 	const [message, setMessage] = useState({ status: null, text: null });
 
