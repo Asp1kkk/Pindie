@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import { getJWT, getMe, removeJWT, setJWT } from "../api/api-utils";
+import { AuthContext } from "../context/app-context";
 
 export const App = ({ children }) => {
 	const [isAuth, setIsAuth] = useState(false);
@@ -41,10 +42,10 @@ export const App = ({ children }) => {
 	}, []);
 
 	return (
-		<>
+		<AuthContext.Provider value={{ isAuth, user, token, login, logout }}>
 			<Header />
 			{children}
 			<Footer />
-		</>
+		</AuthContext.Provider>
 	);
 };
