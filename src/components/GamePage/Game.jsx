@@ -1,22 +1,17 @@
 "use client";
 
+import { useEffect, useState, useContext } from "react";
+import { getJWT, checkIfUserVoted, vote, isResponseOk } from "@/src/api/api-utils";
+
+import { AuthContext } from "@/src/context/app-context";
+
 import Styles from "./Game.module.css";
-import { useEffect, useState } from "react";
-import {
-	getJWT,
-	getMe,
-	removeJWT,
-	checkIfUserVoted,
-	vote,
-	isResponseOk,
-} from "@/src/api/api-utils";
 import AuthForm from "../AuthForm/AuthForm";
 import Popup from "../Popup/Popup";
 import Overlay from "../Overlay/Overlay";
 
 const Game = ({ data: { id, link, heading, author, description, users } }) => {
-	const [isAuthorized, setIsAuthorized] = useState(false);
-	const [user, setUser] = useState(null);
+	const { isAuth, user, token } = useContext(AuthContext);
 	const [isVoted, setIsVoted] = useState(false);
 
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
@@ -26,33 +21,21 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	};
 
 	useEffect(() => {
-		(async () => {
-			const jwt = getJWT();
-			if (jwt) {
-				const userData = await getMe(jwt);
-				if (isResponseOk(userData)) {
-					setIsAuthorized(true);
-					setUser(userData);
-				} else {
-					setIsAuthorized(false);
-					removeJWT();
-				}
-			}
-		})();
+		(async () => {})();
 	}, []);
 
 	useEffect(() => {
+		console.log(1);
 		user && setIsVoted(checkIfUserVoted(users, user));
 	}, [user, users]);
 
 	const handleClick = async () => {
-		if (isAuthorized) {
-			const jwt = getJWT();
-
+		if (isAuth) {
 			users.push(user);
 			const usersIDArray = users.map((item) => item.id);
 
-			const response = await vote(id, jwt, usersIDArray);
+			const response = await vote(id, token, usersIDArray);
+
 			if (isResponseOk(response)) {
 				setIsVoted(true);
 			}
@@ -94,7 +77,7 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 			{popupIsOpened && (
 				<Overlay handlePopup={handlePopup}>
 					<Popup handlePopup={handlePopup}>
-						<AuthForm handlePopup={handlePopup} setAuth={setIsAuthorized}></AuthForm>
+						<AuthForm handlePopup={handlePopup}></AuthForm>
 					</Popup>
 				</Overlay>
 			)}
