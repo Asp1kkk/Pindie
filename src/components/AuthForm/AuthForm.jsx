@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Styles from "./AuthForm.module.css";
-import { authorize, isResponseOk, setJWT } from "@/src/api/api-utils";
+import { AuthContext } from "@/src/context/app-context";
+import { authorize, isResponseOk } from "@/src/api/api-utils";
 
 const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
 
-const AuthForm = ({ setAuth, handlePopup }) => {
+const AuthForm = ({ handlePopup }) => {
+	const { user, login } = useContext(AuthContext);
 	const [authData, setAuthData] = useState(AUTH_DATA_TEMPLATE);
-	const [userData, setUserData] = useState(null);
 	const [message, setMessage] = useState({ status: null, text: null });
 
 	const handleInput = (e) => {
@@ -24,22 +25,20 @@ const AuthForm = ({ setAuth, handlePopup }) => {
 		const userData = await authorize(authData);
 
 		isResponseOk(userData)
-			? (setUserData(userData),
-				setAuth(true),
-				setJWT(userData.jwt),
-				setMessage({ status: "success", text: "Вы авторизовались!" }))
+			? (login(userData, userData.jwt), setMessage({ status: "success", text: "Вы авторизовались!" }))
 			: setMessage({ status: "error", text: "Неверные почта или пароль" });
 	};
 
 	useEffect(() => {
 		let timer;
-		if (userData) {
+		if (user) {
 			timer = setTimeout(() => {
+				setMessage({ status: null, text: null });
 				handlePopup();
 			}, 1000);
 		}
 		return () => clearTimeout(timer);
-	}, [userData]);
+	}, [user]);
 
 	return (
 		<form onReset={handleReset} onSubmit={handleSubmit} className={Styles["form"]}>
@@ -69,9 +68,7 @@ const AuthForm = ({ setAuth, handlePopup }) => {
 				</label>
 			</div>
 			{message.status && (
-				<p
-					className={`${Styles.form__message} ${message.status === "error" && Styles.error}`}
-				>
+				<p className={`${Styles.form__message} ${message.status === "error" && Styles.error}`}>
 					{message.text}
 				</p>
 			)}
