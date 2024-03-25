@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import Styles from "./Header.module.css";
 import Overlay from "../Overlay/Overlay";
 import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
-import { getJWT, getMe, removeJWT } from "@/src/api/api-utils";
+
+import { AuthContext } from "@/src/context/app-context";
 
 const headerNavigationContents = [
 	{ title: "Новинки", path: "/new" },
@@ -19,22 +22,14 @@ const headerNavigationContents = [
 ];
 
 const Header = () => {
+	const { isAuth, logout } = useContext(AuthContext);
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
-	const [isAuthorized, setIsAuthorized] = useState(false);
 	const pathname = usePathname();
-
-	useEffect(() => {
-		(async () => {
-			const jwt = getJWT();
-			jwt && ((await getMe(jwt)) ? setIsAuthorized(true) : (setIsAuthorized(false), removeJWT()));
-		})();
-	}, []);
 
 	const handlePopup = (e) => {
 		e?.stopPropagation();
-		if (isAuthorized && !popupIsOpened) {
-			removeJWT();
-			setIsAuthorized(false);
+		if (isAuth && !popupIsOpened) {
+			logout();
 		} else {
 			setPopupIsOpened((prev) => !prev);
 		}
@@ -63,14 +58,14 @@ const Header = () => {
 				</ul>
 				<div className={Styles.auth}>
 					<button onClick={handlePopup} className={Styles.auth__button}>
-						{isAuthorized ? "Выйти" : "Войти"}
+						{isAuth ? "Выйти" : "Войти"}
 					</button>
 				</div>
 			</nav>
 			{popupIsOpened && (
 				<Overlay handlePopup={handlePopup}>
 					<Popup handlePopup={handlePopup}>
-						<AuthForm handlePopup={handlePopup} setAuth={setIsAuthorized}></AuthForm>
+						<AuthForm handlePopup={handlePopup}></AuthForm>
 					</Popup>
 				</Overlay>
 			)}
