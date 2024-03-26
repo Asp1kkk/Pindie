@@ -1,22 +1,14 @@
-import Link from "next/link.js";
-import Card from "../Card/Card.jsx";
+import CardList from "./CardList/CardList.jsx";
 import Styles from "./CardListSection.module.css";
+import CardSlider from "./CardSlider/CardSlider.jsx";
 
-const CardList = ({ id, title, data }) => {
+const CardListSection = ({ id, title, data, type }) => {
 	return (
 		<section id={id} className={Styles["list-section"]}>
 			<h2 className={Styles["list-section__title"]}>{title}</h2>
-			<ul className={Styles["cards-list"]}>
-				{data.map((card) => (
-					<li key={card.id} className={Styles["cards-list__item"]}>
-						<Link href={`/games/${card.id}`} className={Styles["card-list__link"]}>
-							<Card {...card} />
-						</Link>
-					</li>
-				))}
-			</ul>
+			{type === "slider" ? <CardSlider data={data} /> : <CardList data={data} />}
 		</section>
 	);
 };
 
-export default CardList;
+export default CardListSection;
