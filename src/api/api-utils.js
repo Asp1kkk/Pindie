@@ -106,3 +106,16 @@ export const vote = async (gameID, jwt, usersArray) => {
 		return error;
 	}
 };
+
+export const register = async (regData) => {
+	try {
+		const response = await fetch(endPoints.reg, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(regData),
+		});
+		return await response.json();
+	} catch (error) {
+		return error;
+	}
+};
