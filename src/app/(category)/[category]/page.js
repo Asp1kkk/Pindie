@@ -1,9 +1,9 @@
 "use client";
 
 import { Preloader } from "@/src/components/Preloader/Preloader";
-import CardList from "/src/components/CardListSection/CardListSection.jsx";
 import { useGetDataByCategory } from "@/src/api/api-hooks";
 import GameNotFound from "@/src/components/GameNotFound/GameNotFound";
+import CardListSection from "@/src/components/CardListSection/CardListSection";
 
 const titles = {
 	new: "Новинки",
@@ -21,7 +21,7 @@ const Category = ({ params: { category } }) => {
 			{cards?.length == 0 ? (
 				<GameNotFound />
 			) : cards ? (
-				<CardList data={cards} id={category} title={titles[category]} />
+				<CardListSection data={cards} id={category} title={titles[category]} />
 			) : (
 				<Preloader />
 			)}
