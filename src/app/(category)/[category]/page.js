@@ -1,7 +1,7 @@
 "use client";
 
 import { Preloader } from "@/src/components/Preloader/Preloader";
-import CardList from "/src/components/CardList/CardList";
+import CardList from "/src/components/CardListSection/CardListSection.jsx";
 import { useGetDataByCategory } from "@/src/api/api-hooks";
 import GameNotFound from "@/src/components/GameNotFound/GameNotFound";
 

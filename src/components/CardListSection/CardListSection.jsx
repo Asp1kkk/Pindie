@@ -1,6 +1,6 @@
 import Link from "next/link.js";
 import Card from "../Card/Card.jsx";
-import Styles from "./CardList.module.css";
+import Styles from "./CardListSection.module.css";
 
 const CardList = ({ id, title, data }) => {
 	return (

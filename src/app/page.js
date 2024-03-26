@@ -3,7 +3,7 @@
 import { useGetDataByCategory } from "../api/api-hooks";
 import { Preloader } from "../components/Preloader/Preloader";
 import Banner from "/src/components/Banner/Banner.jsx";
-import CardList from "/src/components/CardList/CardList.jsx";
+import CardList from "/src/components/CardListSection/CardListSection.jsx";
 import Promo from "/src/components/Promo/Promo.jsx";
 
 const Home = () => {
