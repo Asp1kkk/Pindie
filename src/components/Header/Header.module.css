@@ -67,7 +67,8 @@
 }
 
 .auth {
-	display: flex;
+	display: grid;
+	grid-template-rows: 1fr 1fr;
 }
 
 .auth__button {
@@ -85,6 +86,10 @@
 
 .auth__button:hover {
 	color: #ffff00;
+}
+
+.register {
+	background-color: #6c7331;
 }
 
 @media (width <= 1200px) {

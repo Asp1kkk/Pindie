@@ -11,6 +11,7 @@ import Popup from "../Popup/Popup";
 import AuthForm from "../AuthForm/AuthForm";
 
 import { useStore } from "@/src/store/app-store";
+import RegisterForm from "../RegisterForm/RegisterForm";
 
 const headerNavigationContents = [
 	{ title: "Новинки", path: "/new" },
@@ -24,6 +25,7 @@ const headerNavigationContents = [
 const Header = () => {
 	const { isAuth, logout } = useStore();
 	const [popupIsOpened, setPopupIsOpened] = useState(false);
+	const [popupRegIsOpened, setPopupRegIsOpened] = useState(false);
 	const pathname = usePathname();
 
 	const handlePopup = (e) => {
@@ -34,6 +36,11 @@ const Header = () => {
 			setPopupIsOpened((prev) => !prev);
 		}
 	};
+
+	const handleRegister = () => {
+		setPopupRegIsOpened((prev) => !prev);
+	};
+
 	return (
 		<header className={Styles.header}>
 			{pathname === "/" ? (
@@ -60,12 +67,24 @@ const Header = () => {
 					<button onClick={handlePopup} className={Styles.auth__button}>
 						{isAuth ? "Выйти" : "Войти"}
 					</button>
+					{!isAuth && (
+						<button onClick={handleRegister} className={`${Styles.auth__button} ${Styles.register}`}>
+							Регистрация
+						</button>
+					)}
 				</div>
 			</nav>
 			{popupIsOpened && (
 				<Overlay handlePopup={handlePopup}>
 					<Popup handlePopup={handlePopup}>
 						<AuthForm handlePopup={handlePopup}></AuthForm>
+					</Popup>
+				</Overlay>
+			)}
+			{popupRegIsOpened && (
+				<Overlay handlePopup={handleRegister}>
+					<Popup handlePopup={handleRegister}>
+						<RegisterForm handlePopup={handleRegister}></RegisterForm>
 					</Popup>
 				</Overlay>
 			)}
