@@ -5,7 +5,7 @@ import Styles from "./AuthForm.module.css";
 import { authorize, isResponseOk } from "@/src/api/api-utils";
 import { useStore } from "@/src/store/app-store";
 
-const AUTH_DATA_TEMPLATE = { identifier: "", password: "" };
+const AUTH_DATA_TEMPLATE = { email: "", password: "" };
 
 const AuthForm = ({ handlePopup }) => {
 	const { user, login } = useStore();
@@ -48,8 +48,8 @@ const AuthForm = ({ handlePopup }) => {
 					<span className={Styles["form__field-title"]}>Email</span>
 					<input
 						onInput={handleInput}
-						name="identifier"
-						value={authData.identifier}
+						name="email"
+						value={authData.email}
 						className={Styles["form__field-input"]}
 						type="email"
 						placeholder="email here!"

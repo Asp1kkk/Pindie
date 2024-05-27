@@ -20,10 +20,6 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	};
 
 	useEffect(() => {
-		(async () => {})();
-	}, []);
-
-	useEffect(() => {
 		user && setIsVoted(checkIfUserVoted(users, user));
 	}, [user, users]);
 

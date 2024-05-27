@@ -33,9 +33,15 @@ const normalizeGame = (game) => {
 				...game,
 				author: game.developer,
 				heading: game.title,
-				users: game.users_permissions_users,
 				category: game.categoies,
 				src: game.image,
+				id: game._id,
+				users: game.users.map((item) => {
+					return {
+						...item,
+						id: item._id,
+					};
+				}),
 			}
 		: null;
 };
@@ -96,7 +102,7 @@ export const vote = async (gameID, jwt, usersArray) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${jwt}`,
 			},
-			body: JSON.stringify({ users_permissions_users: usersArray }),
+			body: JSON.stringify({ users: usersArray }),
 		});
 		if (!res.ok || !gameID || !jwt || !usersArray) {
 			throw new Error("Ошибка голосования");
