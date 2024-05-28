@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3001/api";
+export const BASE_URL = "https://pindie-backend-aspik.nomorepartiesco.ru/api";
 
 export const endPoints = {
 	games: `${BASE_URL}/games`,
