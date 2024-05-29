@@ -94,21 +94,23 @@ export const checkIfUserVoted = (users, user) => {
 	return !!users.find((elem) => elem.id == user.id);
 };
 
-export const vote = async (gameID, jwt, usersArray) => {
+export const vote = async (gameID, jwt, usersArray, data) => {
 	try {
+		console.log(gameID, jwt, usersArray, data);
 		const res = await fetch(`${endPoints.games}/${gameID}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${jwt}`,
 			},
-			body: JSON.stringify({ users: usersArray }),
+			body: JSON.stringify({ users: usersArray, ...data }),
 		});
 		if (!res.ok || !gameID || !jwt || !usersArray) {
 			throw new Error("Ошибка голосования");
 		}
 		return await res.json();
 	} catch (error) {
+		console.error(error);
 		return error;
 	}
 };

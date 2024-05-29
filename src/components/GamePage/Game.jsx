@@ -9,7 +9,7 @@ import Popup from "../Popup/Popup";
 import Overlay from "../Overlay/Overlay";
 import { useStore } from "@/src/store/app-store";
 
-const Game = ({ data: { id, link, heading, author, description, users } }) => {
+const Game = ({ data }) => {
 	const { isAuth, user, token } = useStore();
 	const [isVoted, setIsVoted] = useState(false);
 
@@ -20,15 +20,17 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	};
 
 	useEffect(() => {
-		user && setIsVoted(checkIfUserVoted(users, user));
-	}, [user, users]);
+		user && setIsVoted(checkIfUserVoted(data.users, user));
+	}, [user, data.users]);
 
 	const handleClick = async () => {
+		console.log("here");
 		if (isAuth) {
-			users.push(user);
-			const usersIDArray = users.map((item) => item.id);
+			console.log("here if");
+			data.users.push(user);
+			const usersIDArray = data.users.map((item) => item.id);
 
-			const response = await vote(id, token, usersIDArray);
+			const response = await vote(data.id, token, usersIDArray, data);
 
 			if (isResponseOk(response)) {
 				setIsVoted(true);
@@ -41,23 +43,23 @@ const Game = ({ data: { id, link, heading, author, description, users } }) => {
 	return (
 		<>
 			<section className={Styles["game"]}>
-				<iframe className={Styles["game__iframe"]} src={link} />
+				<iframe className={Styles["game__iframe"]} src={data.link} />
 			</section>
 			<section className={Styles["about"]}>
-				<h2 className={Styles["about__title"]}>{heading}</h2>
+				<h2 className={Styles["about__title"]}>{data.heading}</h2>
 				<div className={Styles["about__content"]}>
-					<p className={Styles["about__description"]}>{description}</p>
+					<p className={Styles["about__description"]}>{data.description}</p>
 					<div className={Styles["about__author"]}>
 						<p>
 							Автор:
-							<span className={Styles["about__accent"]}>{author}</span>
+							<span className={Styles["about__accent"]}>{data.author}</span>
 						</p>
 					</div>
 				</div>
 				<div className={Styles["about__vote"]}>
 					<p className={Styles["about__vote-amount"]}>
 						За игру уже проголосовали:
-						<span className={Styles["about__accent"]}>{users.length}</span>
+						<span className={Styles["about__accent"]}>{data.users.length}</span>
 					</p>
 					<button
 						disabled={isVoted && isAuth}
